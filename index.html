@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Tennis</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #07111f;
+    color: white;
+    min-height: 100vh;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+.screen {
+    display: none;
+    min-height: 100vh;
+    padding: 25px;
+}
+
+.active {
+    display: block;
+}
+
+/* ACCUEIL */
+
+#home {
+    text-align: center;
+    background:
+        radial-gradient(circle at top, #164d78, transparent 45%),
+        #07111f;
+}
+
+.logo {
+    font-size: 42px;
+    font-weight: 900;
+    margin-top: 70px;
+}
+
+.subtitle {
+    color: #8fb4d8;
+    margin: 10px 0 50px;
+}
+
+.main-btn {
+    width: 90%;
+    max-width: 420px;
+    padding: 18px;
+    margin: 8px auto;
+    display: block;
+    border-radius: 14px;
+    background: #168cff;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.secondary {
+    background: #14283d;
+}
+
+/* CREATION */
+
+.card {
+    background: #102237;
+    border-radius: 18px;
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0 15px;
+    border-radius: 10px;
+    border: 1px solid #29435f;
+    background: #081525;
+    color: white;
+}
+
+label {
+    color: #9fb8d0;
+}
+
+/* DASHBOARD */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.money {
+    background: #152c43;
+    padding: 10px 15px;
+    border-radius: 12px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.stat {
+    background: #102237;
+    padding: 18px;
+    border-radius: 15px;
+}
+
+.stat span {
+    display: block;
+    color: #86a7c7;
+    font-size: 13px;
+}
+
+.stat strong {
+    font-size: 26px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.menu-grid button {
+    padding: 20px;
+    background: #102237;
+    color: white;
+    border-radius: 15px;
+    font-size: 16px;
+}
+
+/* MATCH */
+
+#match {
+    background: #07111f;
+}
+
+.scoreboard {
+    max-width: 700px;
+    margin: auto;
+    background: #102237;
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.players {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+.score {
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.court {
+    height: 300px;
+    max-width: 700px;
+    margin: 20px auto;
+    position: relative;
+    background: #2377a8;
+    border: 6px solid white;
+    overflow: hidden;
+}
+
+.court::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: white;
+}
+
+.net {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: #ddd;
+}
+
+.ball {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #dfff00;
+    left: 48%;
+    top: 48%;
+    transition: all .25s;
+}
+
+.player-dot {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #ff4545;
+    bottom: 25px;
+    left: 46%;
+}
+
+.enemy-dot {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #222;
+    top: 25px;
+    left: 46%;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-width: 700px;
+    margin: auto;
+}
+
+.actions button {
+    padding: 16px;
+    background: #168cff;
+    color: white;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.actions button:nth-child(3) {
+    background: #8c4cff;
+}
+
+.actions button:nth-child(4) {
+    background: #19a974;
+}
+
+.energy {
+    max-width: 700px;
+    margin: 15px auto;
+    height: 12px;
+    background: #24384d;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.energy-bar {
+    height: 100%;
+    width: 100%;
+    background: #32d583;
+}
+
+/* LISTES */
+
+.list {
+    max-width: 700px;
+    margin: auto;
+}
+
+.row {
+    background: #102237;
+    padding: 16px;
+    margin: 8px 0;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.back {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #14283d;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ACCUEIL -->
+
+<section id="home" class="screen active">
+    <div class="logo">🎾 ULTIMATE TENNIS</div>
+    <div class="subtitle">Become the next tennis legend.</div>
+
+    <button class="main-btn" onclick="show('create')">
+        NOUVELLE CARRIÈRE
+    </button>
+
+    <button class="main-btn secondary" onclick="loadCareer()">
+        CONTINUER
+    </button>
+</section>
+
+
+<!-- CREATION -->
+
+<section id="create" class="screen">
+
+    <div class="card">
+        <h1>Créer ton joueur</h1>
+        <br>
+
+        <label>Prénom</label>
+        <input id="firstName" placeholder="Ex : Arthur">
+
+        <label>Nom</label>
+        <input id="lastName" placeholder="Ex : Magic">
+
+        <label>Pays</label>
+        <select id="country">
+            <option>France 🇫🇷</option>
+            <option>Espagne 🇪🇸</option>
+            <option>Italie 🇮🇹</option>
+            <option>États-Unis 🇺🇸</option>
+            <option>Serbie 🇷🇸</option>
+            <option>Royaume-Uni 🇬🇧</option>
+        </select>
+
+        <label>Style</label>
+        <select id="style">
+            <option>Joueur offensif</option>
+            <option>Défenseur</option>
+            <option>Joueur polyvalent</option>
+            <option>Serveur-volleyeur</option>
+        </select>
+
+        <button class="main-btn" onclick="createPlayer()">
+            COMMENCER LA CARRIÈRE
+        </button>
+    </div>
+
+</section>
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="screen">
+
+    <div class="topbar">
+        <div>
+            <h1 id="playerName"></h1>
+            <p id="playerCountry"></p>
+        </div>
+
+        <div class="money">
+            💰 <span id="money">5000</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Classement mondial</h2>
+        <br>
+        <h1>#<span id="ranking">847</span></h1>
+        <p>Points : <span id="points">25</span></p>
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <span>Service</span>
+            <strong id="serve">60</strong>
+        </div>
+
+        <div class="stat">
+            <span>Coup droit</span>
+            <strong id="forehand">62</strong>
+        </div>
+
+        <div class="stat">
+            <span>Revers</span>
+            <strong id="backhand">58</strong>
+        </div>
+
+        <div class="stat">
+            <span>Vitesse</span>
+            <strong id="speed">65</strong>
+        </div>
+
+        <div class="stat">
+            <span>Endurance</span>
+            <strong id="stamina">70</strong>
+        </div>
+
+        <div class="stat">
+            <span>Mental</span>
+            <strong id="mental">55</strong>
+        </div>
+
+    </div>
+
+    <div class="menu-grid">
+
+        <button onclick="startMatch()">
+            🎾 MATCH
+        </button>
+
+        <button onclick="showRanking()">
+            🏆 CLASSEMENT
+        </button>
+
+        <button onclick="showCalendar()">
+            📅 CALENDRIER
+        </button>
+
+        <button onclick="train()">
+            💪 ENTRAÎNEMENT
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- MATCH -->
+
+<section id="match" class="screen">
+
+    <button class="back" onclick="show('dashboard')">
+        ← Quitter le match
+    </button>
+
+    <div class="scoreboard">
+
+        <div class="players">
+            <span id="matchPlayer">Toi</span>
+            <span>Alex Novak</span>
+        </div>
+
+        <div class="score">
+            <span id="playerGames">0</span>
+            -
+            <span id="enemyGames">0</span>
+        </div>
+
+        <div style="text-align:center">
+            Set <span id="setNumber">1</span>
+        </div>
+
+    </div>
+
+    <div class="energy">
+        <div id="energyBar" class="energy-bar"></div>
+    </div>
+
+    <div class="court">
+
+        <div class="enemy-dot"></div>
+        <div class="net"></div>
+        <div id="ball" class="ball"></div>
+        <div class="player-dot"></div>
+
+    </div>
+
+    <div class="actions">
+
+        <button onclick="playShot('forehand')">
+            🎾 Coup droit
+        </button>
+
+        <button onclick="playShot('backhand')">
+            🔄 Revers
+        </button>
+
+        <button onclick="playShot('power')">
+            💥 Coup puissant
+        </button>
+
+        <button onclick="playShot('serve')">
+            🚀 Service
+        </button>
+
+    </div>
+
+    <div class="card">
+        <p id="matchMessage">
+            Le match commence...
+        </p>
+    </div>
+
+</section>
+
+
+<!-- CLASSEMENT -->
+
+<section id="rankingScreen" class="screen">
+
+    <button class="back" onclick="show('dashboard')">
+        ← Retour
+    </button>
+
+    <h1>🏆 Classement mondial</h1>
+
+    <div class="list" id="rankingList"></div>
+
+</section>
+
+
+<!-- CALENDRIER -->
+
+<section id="calendarScreen" class="screen">
+
+    <button class="back" onclick="show('dashboard')">
+        ← Retour
+    </button>
+
+    <h1>📅 Calendrier</h1>
+
+    <div class="list">
+
+        <div class="row">
+            <span>🇦🇺 Australian Open</span>
+            <strong>Grand Chelem</strong>
+        </div>
+
+        <div class="row">
+            <span>🇺🇸 Indian Wells</span>
+            <strong>Masters 1000</strong>
+        </div>
+
+        <div class="row">
+            <span>🇲🇨 Monte-Carlo</span>
+            <strong>Masters 1000</strong>
+        </div>
+
+        <div class="row">
+            <span>🇫🇷 Roland-Garros</span>
+            <strong>Grand Chelem</strong>
+        </div>
+
+        <div class="row">
+            <span>🇬🇧 Wimbledon</span>
+            <strong>Grand Chelem</strong>
+        </div>
+
+        <div class="row">
+            <span>🇺🇸 US Open</span>
+            <strong>Grand Chelem</strong>
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+let player = JSON.parse(localStorage.getItem("tennisPlayer"));
+
+let match = {
+    playerGames: 0,
+    enemyGames: 0,
+    playerSets: 0,
+    enemySets: 0,
+    set: 1,
+    energy: 100
+};
+
+
+/* NAVIGATION */
+
+function show(id) {
+
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+}
+
+
+/* CREATION JOUEUR */
+
+function createPlayer() {
+
+    const first = document.getElementById("firstName").value.trim();
+    const last = document.getElementById("lastName").value.trim();
+    const country = document.getElementById("country").value;
+    const style = document.getElementById("style").value;
+
+    if (!first || !last) {
+        alert("Entre ton prénom et ton nom.");
+        return;
+    }
+
+    player = {
+
+        firstName: first,
+        lastName: last,
+        country: country,
+        style: style,
+
+        money: 5000,
+        ranking: 847,
+        points: 25,
+
+        serve: 60,
+        forehand: 62,
+        backhand: 58,
+        speed: 65,
+        stamina: 70,
+        mental: 55,
+
+        wins: 0,
+        losses: 0
+
+    };
+
+    savePlayer();
+
+    updateDashboard();
+
+    show("dashboard");
+}
+
+
+/* SAUVEGARDE */
+
+function savePlayer() {
+    localStorage.setItem(
+        "tennisPlayer",
+        JSON.stringify(player)
+    );
+}
+
+
+/* CHARGER CARRIERE */
+
+function loadCareer() {
+
+    if (!player) {
+        alert("Aucune carrière sauvegardée.");
+        show("create");
+        return;
+    }
+
+    updateDashboard();
+    show("dashboard");
+}
+
+
+/* DASHBOARD */
+
+function updateDashboard() {
+
+    document.getElementById("playerName").textContent =
+        player.firstName + " " + player.lastName;
+
+    document.getElementById("playerCountry").textContent =
+        player.country;
+
+    document.getElementById("money").textContent =
+        player.money;
+
+    document.getElementById("ranking").textContent =
+        player.ranking;
+
+    document.getElementById("points").textContent =
+        player.points;
+
+    document.getElementById("serve").textContent =
+        player.serve;
+
+    document.getElementById("forehand").textContent =
+        player.forehand;
+
+    document.getElementById("backhand").textContent =
+        player.backhand;
+
+    document.getElementById("speed").textContent =
+        player.speed;
+
+    document.getElementById("stamina").textContent =
+        player.stamina;
+
+    document.getElementById("mental").textContent =
+        player.mental;
+}
+
+
+/* MATCH */
+
+function startMatch() {
+
+    match = {
+
+        playerGames: 0,
+        enemyGames: 0,
+        playerSets: 0,
+        enemySets: 0,
+        set: 1,
+        energy: 100
+
+    };
+
+    document.getElementById("matchPlayer").textContent =
+        player.firstName;
+
+    updateMatch();
+
+    show("match");
+
+    message("Le match commence !");
+
+}
+
+
+/* COUPS */
+
+function playShot(type) {
+
+    if (match.energy <= 0) {
+
+        message("Tu es complètement épuisé !");
+        return;
+
+    }
+
+    let stat = player.forehand;
+
+    if (type === "backhand")
+        stat = player.backhand;
+
+    if (type === "serve")
+        stat = player.serve;
+
+    if (type === "power")
+        stat = player.forehand + 8;
+
+
+    let success = Math.random() * 100 < stat + player.mental / 4;
+
+    match.energy -= type === "power" ? 8 : 4;
+
+    if (match.energy < 0)
+        match.energy = 0;
+
+
+    animateBall();
+
+
+    if (success) {
+
+        let winnerChance = Math.random();
+
+        if (winnerChance < 0.25) {
+
+            match.playerGames++;
+
+            message("🔥 Coup gagnant ! Tu remportes le jeu.");
+
+        } else {
+
+            message("Excellent échange !");
+
+            if (Math.random() < 0.45) {
+                match.playerGames++;
+                message("🎾 Tu remportes le jeu !");
+            } else {
+                enemyPoint();
+            }
+
+        }
+
+    } else {
+
+        if (Math.random() < 0.5) {
+
+            match.enemyGames++;
+
+            message("❌ Faute directe ! L'adversaire gagne le jeu.");
+
+        } else {
+
+            enemyPoint();
+
+        }
+
+    }
+
+
+    checkSet();
+    updateMatch();
+
+}
+
+
+/* ADVERSAIRE */
+
+function enemyPoint() {
+
+    if (Math.random() < 0.55) {
+
+        match.enemyGames++;
+
+        message("L'adversaire prend le jeu.");
+
+    } else {
+
+        message("Tu défends parfaitement !");
+
+    }
+
+}
+
+
+/* SET */
+
+function checkSet() {
+
+    if (match.playerGames >= 6 &&
+        match.playerGames - match.enemyGames >= 2) {
+
+        match.playerSets++;
+
+        nextSet(true);
+
+    }
+
+    else if (
+        match.enemyGames >= 6 &&
+        match.enemyGames - match.playerGames >= 2
+    ) {
+
+        match.enemySets++;
+
+        nextSet(false);
+
+    }
+
+}
+
+
+/* SET SUIVANT */
+
+function nextSet(won) {
+
+    if (match.playerSets >= 2 ||
+        match.enemySets >= 2) {
+
+        endMatch(match.playerSets > match.enemySets);
+
+        return;
+    }
+
+    match.playerGames = 0;
+    match.enemyGames = 0;
+
+    match.set++;
+
+    match.energy += 25;
+
+    if (match.energy > 100)
+        match.energy = 100;
+
+    message(
+        won
+        ? "🏆 Tu remportes le set !"
+        : "L'adversaire remporte le set."
+    );
+
+}
+
+
+/* FIN */
+
+function endMatch(won) {
+
+    if (won) {
+
+        player.wins++;
+
+        player.points += 120;
+
+        player.money += 800;
+
+        player.ranking -= 20;
+
+        if (player.ranking < 1)
+            player.ranking = 1;
+
+        message("🏆 VICTOIRE ! +120 points et +800€");
+
+    } else {
+
+        player.losses++;
+
+        player.points += 10;
+
+        message("❌ Défaite. +10 points.");
+
+    }
+
+    savePlayer();
+
+    updateDashboard();
+
+}
+
+
+/* ENTRAINEMENT */
+
+function train() {
+
+    if (player.money < 100) {
+
+        alert("Pas assez d'argent.");
+        return;
+
+    }
+
+    player.money -= 100;
+
+    const stats = [
+        "serve",
+        "forehand",
+        "backhand",
+        "speed",
+        "stamina",
+        "mental"
+    ];
+
+    const selected =
+        stats[Math.floor(Math.random() * stats.length)];
+
+    if (player[selected] < 99)
+        player[selected] += 1;
+
+    savePlayer();
+
+    updateDashboard();
+
+    alert(
+        "💪 Entraînement terminé !\n\n" +
+        selected + " +1"
+    );
+
+}
+
+
+/* CLASSEMENT */
+
+function showRanking() {
+
+    const names = [
+        "Carlos Alcaraz",
+        "Jannik Sinner",
+        "Novak Djokovic",
+        "Alexander Zverev",
+        "Daniil Medvedev",
+        "Taylor Fritz",
+        "Holger Rune",
+        "Arthur Magic"
+    ];
+
+    let html = "";
+
+    names.forEach((name, index) => {
+
+        html += `
+        <div class="row">
+            <span>#${index + 1} ${name}</span>
+            <strong>${10000 - index * 420} pts</strong>
+        </div>
+        `;
+
+    });
+
+    document.getElementById("rankingList").innerHTML = html;
+
+    show("rankingScreen");
+
+}
+
+
+/* CALENDRIER */
+
+function showCalendar() {
+
+    show("calendarScreen");
+
+}
+
+
+/* BALLE */
+
+function animateBall() {
+
+    const ball =
+        document.getElementById("ball");
+
+    ball.style.left =
+        Math.random() * 85 + 5 + "%";
+
+    ball.style.top =
+        Math.random() * 80 + 10 + "%";
+
+}
+
+
+/* MESSAGE */
+
+function message(text) {
+
+    document.getElementById("matchMessage")
+        .textContent = text;
+
+}
+
+
+/* MATCH UI */
+
+function updateMatch() {
+
+    document.getElementById("playerGames")
+        .textContent = match.playerGames;
+
+    document.getElementById("enemyGames")
+        .textContent = match.enemyGames;
+
+    document.getElementById("setNumber")
+        .textContent = match.set;
+
+    document.getElementById("energyBar")
+        .style.width = match.energy + "%";
+
+}
+
+
+/* AUTO LOAD */
+
+if (player) {
+
+    updateDashboard();
+
+}
+
+</script>
+
+</body>
+</html>
